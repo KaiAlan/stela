@@ -1,16 +1,43 @@
 import React from 'react'
-import GoogleLogin from 'react-google-login';
+// import GoogleLogin from 'react-google-login';
+import { GoogleLogin } from '@react-oauth/google';
 import { useNavigate } from 'react-router-dom';
 import { FcGoogle } from 'react-icons/fc';
 import shareVideo from '../assets/share.mp4';
 import logo from '../assets/logo-white-removebg-preview.png';
+import jwt_decode from "jwt-decode";
+
+import { client } from '../clien';
 
 
 const Login = () => {
 
+  const navigate = useNavigate();
+
   const responseGoogle= (response) =>{
     console.log(response);
-  }
+  };
+
+  const responseMessage = (response) => {
+    const details = jwt_decode(response.credential);
+    localStorage.setItem('user', JSON.stringify(details));
+    const {name, sub, picture} = details;
+
+    const doc = {
+      _id: sub,
+      _type: 'user',
+      userName: name,
+      image: picture,
+    }
+
+    client.createIfNotExists(doc)
+      .then(() => {
+        navigate('/', {replace: true})
+      })
+  };
+  const errorMessage = (error) => {
+    console.log(error);
+  };
 
   return (
     <div className='flex justify-start items-center flex-col h-screen'>
@@ -33,20 +60,18 @@ const Login = () => {
 
           <div className='shadow-2xl'>
             <GoogleLogin
-              clientId={process.env.REACT_APP_GOOGLE_API_TOKEN}
+            //   clientId={process.env.REACT_APP_GOOGLE_API_TOKEN}
               render={(renderProps) => (
                 <button
                   type='button'
                   className='bg-mainColor flex justify-center items-center p-3 rounded-lg cursor-pointer outline-none'
-                  onClick={renderProps.onClick}
-                  disabled={renderProps.disabled}
                   >
                     <FcGoogle className='mr-4' /> Sign in with Google
                   </button>
               )}
 
-              onSuccess={responseGoogle}
-              onFailure={responseGoogle}
+              onSuccess={responseMessage}
+              onError={errorMessage}
               cookiePolicy={'single-host-origin'}
             />
           </div>
