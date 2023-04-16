@@ -7,7 +7,7 @@ import shareVideo from '../assets/share.mp4';
 import logo from '../assets/logo-white-removebg-preview.png';
 import jwt_decode from "jwt-decode";
 
-import { client } from '../clien';
+import { client } from '../client';
 
 
 const Login = () => {
