@@ -20,9 +20,6 @@ const CreatePin = ({ user }) => {
   const navigate = useNavigate();
 
 
-  console.log(user._id);
-  // console.log(a)
-
   const uploadImage = (e) => {
     const { type, name } = e.target.files[0];
 
