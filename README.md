@@ -30,7 +30,7 @@ npm run dev
 
 ## Live Site
 
-You can see a live example of Stela at [https://www.example.com](https://www.example.com).
+You can see a live example of Stela at [Stela](https://stela-kai.netlify.app/).
 
 ## Contributing
 
